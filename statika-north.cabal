@@ -17,6 +17,9 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 executable statika-north
+  hs-source-dirs:   src
+  include-dirs:     src
+
   main-is:             Main.hs
   -- other-modules:       
   -- other-extensions:    
