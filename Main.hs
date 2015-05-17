@@ -41,6 +41,9 @@ store (Obj key value meta inner) = do
 
     where subkey' = subkey key
 
+store' :: Basket String String -> IO ()
+store' basket = foldl (>>) (return ()) (Prelude.map store (snd . unzip . Map.toList $ Main.map basket))
+
 retrieve :: Key -> IO (Obj String String)
 retrieve key = do
     connection <- connect defaultConnectInfo
