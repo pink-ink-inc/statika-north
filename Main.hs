@@ -37,7 +37,7 @@ store (Obj key value meta inner) = do
         set (subkey' "meta") (U.fromString meta)
         ltrim (subkey' "inner") 1 0
         rpush (subkey' "inner") inner
-        liftIO $ return ()
+    return ()
 
     where subkey' = subkey key
 
@@ -47,9 +47,9 @@ retrieve key = do
     runRedis connection $ do
         value' <- get (subkey' "value")
         meta' <- get (subkey' "meta")
+        inner' <- lrange (subkey' "inner") 0 (-1)
         let value = pull value'
         let meta = pull meta'
-        inner' <- lrange (subkey' "inner") 0 (-1)
         let inner = either (\x -> []) id inner'
         liftIO $ return ( Obj { key = key, value = value, meta = meta, inner = inner } )
 
@@ -63,5 +63,5 @@ subkey key suf = B.append (B.append key ".") (U.fromString suf)
 
 
 testObj :: Obj String String
-testObj = Obj { key = "myUID", value = "лалафа", meta = "myMeta", inner = ["myOtherUID"] }
+testObj = Obj { key = "myUID", value = "мяу", meta = "myMeta", inner = ["myOtherUID"] }
 
